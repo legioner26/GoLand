@@ -4,9 +4,8 @@ import (
 	"fmt"
 )
 
-func Reverse(input [10]int) [10]int {
+func Reverse(input [10]int) (output [10]int) {
 	inputLen := len(input)
-	var output [10]int
 
 	for i, n := range input {
 		j := inputLen - i - 1
@@ -14,7 +13,7 @@ func Reverse(input [10]int) [10]int {
 		output[j] = n
 	}
 
-	return output
+	return
 }
 func main() {
 
