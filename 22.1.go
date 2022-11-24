@@ -9,7 +9,7 @@ import (
 const n = 10
 
 func main() {
-	array := generate()
+	array := generate(100)
 	fmt.Println("сгенерирован массив", array)
 	fmt.Println("Введите число для поиска")
 	var number int
@@ -24,11 +24,11 @@ func main() {
 
 }
 
-func generate() (arr [n]int) {
+func generate(count int) (arr [n]int) {
 	generator := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	for i := 0; i < n; i++ {
-		arr[i] = generator.Intn(100)
+		arr[i] = generator.Intn(count)
 	}
 	return
 }
