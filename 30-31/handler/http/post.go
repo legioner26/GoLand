@@ -2,12 +2,10 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/go-chi/chi"
 	"net/http"
 	"skillbox/30-31/driver"
 	repository "skillbox/30-31/repository"
 	post "skillbox/30-31/repository/post"
-	"strconv"
 )
 
 // NewPostHandler ...
@@ -25,8 +23,8 @@ type Post struct {
 // Fetch all post data
 func (p *Post) Fetch(w http.ResponseWriter, r *http.Request) {
 
-	name, _ := strconv.Atoi(chi.URLParam(r, "name"))
-	//name, _ := r.Context().Value("name").(string)
+	//name, _ := strconv.Atoi(chi.URLParam(r, "name"))
+	name, _ := r.Context().Value("name").(string)
 
 	payload, _ := p.repo.Fetch(r.Context(), string(name))
 
