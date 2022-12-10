@@ -51,7 +51,7 @@ func main() {
 // A completely separate router for posts routes
 func postRouter(pHandler *ph.Post) http.Handler {
 	r := chi.NewRouter()
-	r.Post("/select", pHandler.Fetch)
+	r.Post("/select{name}", pHandler.Fetch)
 	/*r.Get("/{id:[0-9]+}", pHandler.GetByID)
 	r.Post("/", pHandler.Create)
 	r.Put("/{id:[0-9]+}", pHandler.Update)
