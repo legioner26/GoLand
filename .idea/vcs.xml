@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/30-31" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/30-31REST/go-mysql-crud" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/go-mysql-crud" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/request/go-mysql-crud" vcs="Git" />
   </component>
 </project>
