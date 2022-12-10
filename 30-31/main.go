@@ -64,7 +64,7 @@ func main() {
 
 	pHandler := ph.NewPostHandler(connection)
 	r.Route("/", func(rt chi.Router) {
-		rt.Mount("/posts", postRouter(pHandler))
+		rt.Mount("/30-31", postRouter(pHandler))
 	})
 
 	proxy := NewMultipleHostReverseProxy([]*url.URL{
@@ -85,7 +85,8 @@ func main() {
 // A completely separate router for posts routes
 func postRouter(pHandler *ph.Post) http.Handler {
 	r := chi.NewRouter()
-	r.Post("/select", pHandler.Fetch)
+	r.Get("/select", pHandler.Fetch)
+
 	/*r.Get("/{id:[0-9]+}", pHandler.GetByID)
 	r.Post("/", pHandler.Create)
 	r.Put("/{id:[0-9]+}", pHandler.Update)
