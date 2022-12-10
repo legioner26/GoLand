@@ -44,17 +44,8 @@ func main() {
 	})
 
 	fmt.Println("Server listen at :8000")
-	proxy := NewMultipleHostReverseProxy([]*url.URL{
-		{
-			Scheme: "http",
-			Host:   "localhost:8000",
-		},
-		{
-			Scheme: "http",
-			Host:   "localhost:8005",
-		},
-	})
-	http.ListenAndServe(":8000", proxy)
+
+	http.ListenAndServe(":8000", r)
 }
 
 // A completely separate router for posts routes
