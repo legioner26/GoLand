@@ -4,23 +4,47 @@ import (
 	"fmt"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"log"
 	"math/rand"
+	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"os"
 	"skillbox/30-31/driver"
 	ph "skillbox/30-31/handler/http"
+	"time"
 )
 
 func NewMultipleHostReverseProxy(targets []*url.URL) *httputil.ReverseProxy {
 	director := func(req *http.Request) {
+		println("CALLING DIRECTOR")
 		target := targets[rand.Int()%len(targets)]
 		req.URL.Scheme = target.Scheme
 		req.URL.Host = target.Host
 		req.URL.Path = target.Path
 	}
-	return &httputil.ReverseProxy{Director: director}
+	return &httputil.ReverseProxy{
+		Director: director,
+		Transport: &http.Transport{
+			Proxy: func(req *http.Request) (*url.URL, error) {
+				println("CALLING PROXY")
+				return http.ProxyFromEnvironment(req)
+			},
+			Dial: func(network, addr string) (net.Conn, error) {
+				println("CALLING DIAL")
+				conn, err := (&net.Dialer{
+					Timeout:   30 * time.Second,
+					KeepAlive: 30 * time.Second,
+				}).Dial(network, addr)
+				if err != nil {
+					println("Error during DIAL:", err.Error())
+				}
+				return conn, err
+			},
+			TLSHandshakeTimeout: 10 * time.Second,
+		},
+	}
 }
 func main() {
 	dbName := os.Getenv("testgo")
@@ -43,15 +67,24 @@ func main() {
 		rt.Mount("/posts", postRouter(pHandler))
 	})
 
+	proxy := NewMultipleHostReverseProxy([]*url.URL{
+		{
+			Scheme: "http",
+			Host:   "localhost:8001",
+		},
+		{
+			Scheme: "http",
+			Host:   "localhost:8002",
+		},
+	})
+	log.Fatal(http.ListenAndServe(":8000", proxy))
 	fmt.Println("Server listen at :8000")
-
-	http.ListenAndServe(":8000", r)
 }
 
 // A completely separate router for posts routes
 func postRouter(pHandler *ph.Post) http.Handler {
 	r := chi.NewRouter()
-	r.Post("/select{name}", pHandler.Fetch)
+	r.Post("/select", pHandler.Fetch)
 	/*r.Get("/{id:[0-9]+}", pHandler.GetByID)
 	r.Post("/", pHandler.Create)
 	r.Put("/{id:[0-9]+}", pHandler.Update)
