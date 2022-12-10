@@ -14,7 +14,7 @@ func main() {
 		"name": {"Igor"},
 	}
 
-	resp, err := http.PostForm("localhost:8000/create", data)
+	resp, err := http.PostForm("localhost:8000/select", data)
 
 	if err != nil {
 		log.Fatal(err)
