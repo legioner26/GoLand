@@ -77,8 +77,9 @@ func main() {
 			Host:   "localhost:8002",
 		},
 	})
-	log.Fatal(http.ListenAndServe(":8000", proxy))
 	fmt.Println("Server listen at :8000")
+	log.Fatal(http.ListenAndServe(":8000", proxy))
+
 }
 
 // A completely separate router for posts routes
