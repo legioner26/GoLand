@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/go-chi/chi"
 	"net/http"
 	"skillbox/30-31/driver"
@@ -25,6 +26,7 @@ type Post struct {
 // Fetch all post data
 func (p *Post) Fetch(w http.ResponseWriter, r *http.Request) {
 	name, _ := strconv.Atoi(chi.URLParam(r, "name"))
+	fmt.Println(name)
 	payload, _ := p.repo.Fetch(r.Context(), string(name))
 
 	respondwithJSON(w, http.StatusOK, payload)
