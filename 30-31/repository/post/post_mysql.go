@@ -18,7 +18,7 @@ type mysqlPostRepo struct {
 	Conn *sql.DB
 }
 
-func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interface{}) (*models.RequestCreate, error) {
+func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interface{}) ([]*models.RequestCreate, error) {
 
 	rows, err := m.Conn.QueryContext(ctx, query, args...)
 	if err != nil {
@@ -43,7 +43,7 @@ func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interfa
 	return payload, nil
 }
 
-func (m *mysqlPostRepo) Fetch(ctx context.Context, Name string) (*models.RequestCreate, error) {
+func (m *mysqlPostRepo) Fetch(ctx context.Context, Name string) ([]*models.RequestCreate, error) {
 	query := "Select Name, Age, Friends From friends where Name=?"
 
 	return m.fetch(ctx, query, Name)
