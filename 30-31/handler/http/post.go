@@ -25,7 +25,7 @@ type Post struct {
 // Fetch all post data
 func (p *Post) Fetch(w http.ResponseWriter, r *http.Request) {
 	name, _ := strconv.Atoi(chi.URLParam(r, "name"))
-	payload, _ := p.repo.Fetch(r.Context(), name)
+	payload, _ := p.repo.Fetch(r.Context(), string(name))
 
 	respondwithJSON(w, http.StatusOK, payload)
 }
