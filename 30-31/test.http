@@ -1,0 +1,61 @@
+###
+
+GET  http://localhost:8080/users/1 HTTP/1.1
+content-type: application/json
+
+# 200 (OK)
+# 404 (Not Found)
+
+###
+
+POST http://localhost:8000/30-31/select HTTP/1.1
+content-type: application/json
+
+{"name":"Igor"}
+
+# 201 (Created) {"id":"1"}
+# 404 (Not Found)
+
+###
+
+PATCH http://localhost:8080/users/1 HTTP/1.1
+content-type: application/json
+
+{"age": 32}
+
+# 200 (OK)
+# 404 (Not Found) 
+
+###
+
+DELETE http://localhost:8080/users/1 HTTP/1.1
+content-type: application/json
+
+# 200 (OK)
+# 404 (Not Found)
+
+###
+
+PUT  http://localhost:8080/users/1/friends HTTP/1.1
+content-type: application/json
+
+{"id":"2"}
+
+# 200 (OK)
+# 404 (Not Found)
+
+###
+
+GET  http://localhost:8080/users/1/friends HTTP/1.1
+content-type: application/json
+
+# 200 (OK)
+# 404 (Not Found)
+
+###
+
+DELETE http://localhost:8080/users/1/friends/2 HTTP/1.1
+content-type: application/json
+
+# 200 (OK)
+# 404 (Not Found)
