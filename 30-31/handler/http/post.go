@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"skillbox/30-31/driver"
+	"skillbox/30-31/models"
 	repository "skillbox/30-31/repository"
 	post "skillbox/30-31/repository/post"
 )
@@ -24,14 +25,22 @@ type Post struct {
 
 // Fetch all post data
 func (p *Post) Fetch(w http.ResponseWriter, r *http.Request) {
-
-	//name, _ := strconv.Atoi(chi.URLParam(r, "name"))
-	name, _ := r.Context().Value("name").(string)
-
-	payload, _ := p.repo.Fetch(r.Context(), string(name))
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	infoLog.Printf("Получаем ответ из БД %s", payload)
-	respondwithJSON(w, http.StatusOK, payload)
+	infoLog.Printf("Смотрим в body %s", r.Body)
+	patchdata := &models.RequestCreate{}
+
+	err := json.NewDecoder(r.Body).Decode(patchdata)
+	if err == nil {
+		infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+		infoLog.Printf("Получаем ответ %s", patchdata.Name)
+
+	}
+	//name, _ := strconv.Atoi(chi.URLParam(r, "name"))
+	//name, _ := r.Context().Value("name").(string)
+
+	//payload, _ := p.repo.Fetch(r.Context(), string(name))
+
+	//respondwithJSON(w, http.StatusOK, payload)
 }
 
 // respondwithJSON write json response format
