@@ -3,6 +3,8 @@ package post
 import (
 	"context"
 	"database/sql"
+	"log"
+	"os"
 	models "skillbox/30-31/models"
 	pRepo "skillbox/30-31/repository"
 )
@@ -19,11 +21,15 @@ type mysqlPostRepo struct {
 }
 
 func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interface{}) ([]*models.RequestCreate, error) {
-
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	infoLog.Printf("Получаем ответ аргумент %s", args...)
+	infoLog.Printf("Получаем query %s", query)
 	rows, err := m.Conn.QueryContext(ctx, query, args...)
+
 	if err != nil {
 		return nil, err
 	}
+
 	defer rows.Close()
 
 	payload := make([]*models.RequestCreate, 0)
@@ -44,6 +50,7 @@ func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interfa
 }
 
 func (m *mysqlPostRepo) Fetch(ctx context.Context, Name string) ([]*models.RequestCreate, error) {
+
 	query := "Select Name, Age, Friends From friends where Name=?"
 
 	return m.fetch(ctx, query, Name)

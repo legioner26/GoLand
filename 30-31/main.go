@@ -12,10 +12,15 @@ import (
 )
 
 func main() {
-	dbName := os.Getenv("testgo")
-	dbPass := os.Getenv("")
-	dbHost := os.Getenv("127.0.0.1")
-	dbPort := os.Getenv("3306")
+	os.Setenv("DB_NAME", "testgo")
+	os.Setenv("DB_PASS", "")
+	os.Setenv("DB_HOST", "127.0.0.1")
+	os.Setenv("DB_PORT", "3306")
+
+	dbName := os.Getenv("DB_NAME")
+	dbPass := os.Getenv("DB_PASS")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
 
 	connection, err := driver.ConnectSQL(dbHost, dbPort, "root", dbPass, dbName)
 	if err != nil {
