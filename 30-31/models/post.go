@@ -1,7 +1,7 @@
 package models
 
 // Post type details
-type RequestCreate struct {
+type RequestSelect struct {
 	Name   string `json:"name"`
 	Age    int64  `json:"age"`
 	Friend string `json:"friend"`

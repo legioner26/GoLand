@@ -20,7 +20,7 @@ type mysqlPostRepo struct {
 	Conn *sql.DB
 }
 
-func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interface{}) ([]*models.RequestCreate, error) {
+func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interface{}) ([]*models.RequestSelect, error) {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	infoLog.Printf("Получаем аргумент %s", args...)
 	infoLog.Printf("Получаем строку запроса %s", query)
@@ -33,9 +33,9 @@ func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interfa
 
 	defer rows.Close()
 
-	payload := make([]*models.RequestCreate, 0)
+	payload := make([]*models.RequestSelect, 0)
 	for rows.Next() {
-		data := new(models.RequestCreate)
+		data := new(models.RequestSelect)
 
 		err := rows.Scan(
 			&data.Name,
@@ -46,12 +46,13 @@ func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interfa
 			return nil, err
 		}
 		payload = append(payload, data)
+		infoLog.Printf("данные %s", payload)
 	}
 	return payload, nil
 
 }
 
-func (m *mysqlPostRepo) Fetch(ctx context.Context, Names string) ([]*models.RequestCreate, error) {
+func (m *mysqlPostRepo) Fetch(ctx context.Context, Names string) ([]*models.RequestSelect, error) {
 
 	query := "Select name, age, friend From friends where name=?"
 

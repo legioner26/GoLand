@@ -24,7 +24,7 @@ type Post struct {
 // Fetch all post data
 func (p *Post) Fetch(w http.ResponseWriter, r *http.Request) {
 
-	patchdata := &models.RequestCreate{}
+	patchdata := &models.RequestSelect{}
 
 	err := json.NewDecoder(r.Body).Decode(patchdata)
 	if err == nil {
