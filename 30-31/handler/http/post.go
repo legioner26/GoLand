@@ -37,6 +37,19 @@ func (p *Post) Fetch(w http.ResponseWriter, r *http.Request) {
 	//name, _ := r.Context().Value("name").(string)
 
 }
+func (p *Post) Create(w http.ResponseWriter, r *http.Request) {
+
+	patchdata := &models.RequestSelect{}
+
+	err := json.NewDecoder(r.Body).Decode(patchdata)
+	if err == nil {
+
+		payload, _ := p.repo.Create(r.Context(), patchdata)
+
+		respondwithJSON(w, http.StatusOK, payload)
+	}
+
+}
 
 // respondwithJSON write json response format
 func respondwithJSON(w http.ResponseWriter, code int, payload interface{}) {

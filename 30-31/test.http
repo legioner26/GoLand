@@ -18,6 +18,15 @@ content-type: application/json
 
 ###
 
+POST http://localhost:8000/30-31/create HTTP/1.1
+content-type: application/json
+
+{"name":"Oleg","age": 25,"friend": "Igor"}
+
+# 201 (Created) {"id":"1"}
+# 404 (Not Found)
+
+###
 PATCH http://localhost:8080/users/1 HTTP/1.1
 content-type: application/json
 

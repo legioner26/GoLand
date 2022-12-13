@@ -58,3 +58,21 @@ func (m *mysqlPostRepo) Fetch(ctx context.Context, Names string) ([]*models.Requ
 
 	return m.fetch(ctx, query, Names)
 }
+func (m *mysqlPostRepo) Create(ctx context.Context, p *models.RequestSelect) (int64, error) {
+
+	query := "Insert friends SET name=?, age=?, friend=?"
+
+	stmt, err := m.Conn.PrepareContext(ctx, query)
+	if err != nil {
+		return -1, err
+	}
+
+	res, err := stmt.ExecContext(ctx, p.Name, p.Age, p.Friend)
+	defer stmt.Close()
+
+	if err != nil {
+		return -1, err
+	}
+
+	return res.LastInsertId()
+}
