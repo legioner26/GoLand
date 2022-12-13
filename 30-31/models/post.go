@@ -16,5 +16,5 @@ type RequestDeleteUser struct {
 }
 
 type RequestAge struct {
-	NewAge string `json:"new age"`
+	NewAge string `json:"new_age"`
 }

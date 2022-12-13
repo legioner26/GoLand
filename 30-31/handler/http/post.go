@@ -2,9 +2,7 @@ package handler
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
-	"os"
 	"skillbox/30-31/driver"
 	"skillbox/30-31/models"
 	repository "skillbox/30-31/repository"
@@ -30,9 +28,9 @@ func (p *Post) Fetch(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(patchdata)
 	if err == nil {
-		infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-		infoLog.Printf("Получаем ответ %s", patchdata.Name)
+
 		payload, _ := p.repo.Fetch(r.Context(), string(patchdata.Name))
+
 		respondwithJSON(w, http.StatusOK, payload)
 	}
 	//name, _ := strconv.Atoi(chi.URLParam(r, "name"))

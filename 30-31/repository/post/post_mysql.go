@@ -22,10 +22,12 @@ type mysqlPostRepo struct {
 
 func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interface{}) ([]*models.RequestCreate, error) {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	infoLog.Printf("Получаем ответ аргумент %s", args...)
-	infoLog.Printf("Получаем query %s", query)
+	infoLog.Printf("Получаем аргумент %s", args...)
+	infoLog.Printf("Получаем строку запроса %s", query)
+
 	rows, err := m.Conn.QueryContext(ctx, query, args...)
 
+	infoLog.Printf("Получаем ответ с запроса %s", rows)
 	if err != nil {
 		return nil, err
 	}
@@ -49,9 +51,21 @@ func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interfa
 	return payload, nil
 }
 
-func (m *mysqlPostRepo) Fetch(ctx context.Context, Name string) ([]*models.RequestCreate, error) {
+func (m *mysqlPostRepo) Fetch(ctx context.Context, Names string) (*models.RequestCreate, error) {
 
-	query := "Select Name, Age, Friends From friends where Name=?"
+	query := "Select name, age, friends From friends where name=?"
 
-	return m.fetch(ctx, query, Name)
+	rows, err := m.fetch(ctx, query, Names)
+	if err != nil {
+		return nil, err
+	}
+
+	payload := &models.RequestCreate{}
+	if len(rows) > 0 {
+		payload = rows[0]
+	} else {
+		return nil, models.ErrNotFound
+	}
+
+	return payload, nil
 }
