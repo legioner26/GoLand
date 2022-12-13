@@ -2,11 +2,13 @@ package handler
 
 import (
 	"encoding/json"
+	"github.com/go-chi/chi"
 	"net/http"
 	"skillbox/30-31/driver"
 	"skillbox/30-31/models"
 	repository "skillbox/30-31/repository"
 	post "skillbox/30-31/repository/post"
+	"strconv"
 )
 
 // NewPostHandler ...
@@ -49,6 +51,29 @@ func (p *Post) Create(w http.ResponseWriter, r *http.Request) {
 		respondwithJSON(w, http.StatusOK, payload)
 	}
 
+}
+func (p *Post) Update(w http.ResponseWriter, r *http.Request) {
+
+	patchdata := &models.RequestMakeFriend{}
+
+	err := json.NewDecoder(r.Body).Decode(patchdata)
+	if err == nil {
+
+		payload, _ := p.repo.Update(r.Context(), patchdata)
+
+		respondwithJSON(w, http.StatusOK, payload)
+	}
+
+}
+func (p *Post) Delete(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(chi.URLParam(r, "id"))
+	_, err := p.repo.Delete(r.Context(), int64(id))
+
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, "Server Error")
+	}
+
+	respondwithJSON(w, http.StatusMovedPermanently, map[string]string{"message": "Delete Successfully"})
 }
 
 // respondwithJSON write json response format

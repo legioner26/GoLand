@@ -10,7 +10,6 @@ import (
 type PostRepo interface {
 	Fetch(ctx context.Context, Name string) ([]*models.RequestSelect, error)
 	Create(ctx context.Context, p *models.RequestSelect) (int64, error)
-	/*Create(ctx context.Context, p *models.Post) (int64, error)
-	Update(ctx context.Context, p *models.Post) (*models.Post, error)
-	Delete(ctx context.Context, id int64) (bool, error)*/
+	Delete(ctx context.Context, id int64) (bool, error)
+	Update(ctx context.Context, p *models.RequestMakeFriend) (*models.RequestMakeFriend, error)
 }

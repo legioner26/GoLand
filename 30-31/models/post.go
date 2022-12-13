@@ -7,12 +7,9 @@ type RequestSelect struct {
 	Friend string `json:"friend"`
 }
 type RequestMakeFriend struct {
-	SourceID string `json:"source_id"`
-	TargetID string `json:"target_id"`
-}
-
-type RequestDeleteUser struct {
-	TargetID string `json:"target_id"`
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Friend string `json:"friend"`
 }
 
 type RequestAge struct {

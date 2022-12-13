@@ -1,10 +1,4 @@
-###
 
-GET  http://localhost:8080/users/1 HTTP/1.1
-content-type: application/json
-
-# 200 (OK)
-# 404 (Not Found)
 
 ###
 
@@ -21,23 +15,13 @@ content-type: application/json
 POST http://localhost:8000/30-31/create HTTP/1.1
 content-type: application/json
 
-{"name":"Oleg","age": 25,"friend": "Igor"}
+{"name":"Вася","age": 28,"friend": "Igor,Kolya"}
 
 # 201 (Created) {"id":"1"}
 # 404 (Not Found)
 
 ###
-PATCH http://localhost:8080/users/1 HTTP/1.1
-content-type: application/json
-
-{"age": 32}
-
-# 200 (OK)
-# 404 (Not Found) 
-
-###
-
-DELETE http://localhost:8080/users/1 HTTP/1.1
+DELETE http://localhost:8000/30-31/delete/5 HTTP/1.1
 content-type: application/json
 
 # 200 (OK)
@@ -45,26 +29,13 @@ content-type: application/json
 
 ###
 
-PUT  http://localhost:8080/users/1/friends HTTP/1.1
+PUT  http://localhost:8000/30-31/update HTTP/1.1
 content-type: application/json
 
-{"id":"2"}
+{"id":"2","name":"Vova","friend":"Kolya,Igor,Petya"}
 
 # 200 (OK)
 # 404 (Not Found)
 
 ###
 
-GET  http://localhost:8080/users/1/friends HTTP/1.1
-content-type: application/json
-
-# 200 (OK)
-# 404 (Not Found)
-
-###
-
-DELETE http://localhost:8080/users/1/friends/2 HTTP/1.1
-content-type: application/json
-
-# 200 (OK)
-# 404 (Not Found)

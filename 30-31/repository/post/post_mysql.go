@@ -76,3 +76,37 @@ func (m *mysqlPostRepo) Create(ctx context.Context, p *models.RequestSelect) (in
 
 	return res.LastInsertId()
 }
+func (m *mysqlPostRepo) Update(ctx context.Context, p *models.RequestMakeFriend) (*models.RequestMakeFriend, error) {
+	query := "Update friends set name=?, friend=? where id=?"
+
+	stmt, err := m.Conn.PrepareContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	_, err = stmt.ExecContext(
+		ctx,
+		p.Name,
+		p.Friend,
+		p.ID,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	return p, nil
+}
+
+func (m *mysqlPostRepo) Delete(ctx context.Context, id int64) (bool, error) {
+	query := "Delete From friends Where id=?"
+
+	stmt, err := m.Conn.PrepareContext(ctx, query)
+	if err != nil {
+		return false, err
+	}
+	_, err = stmt.ExecContext(ctx, id)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
