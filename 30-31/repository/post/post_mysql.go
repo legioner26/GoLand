@@ -27,7 +27,6 @@ func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interfa
 
 	rows, err := m.Conn.QueryContext(ctx, query, args...)
 
-	infoLog.Printf("Получаем ответ с запроса %s", rows)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +40,7 @@ func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interfa
 		err := rows.Scan(
 			&data.Name,
 			&data.Age,
-			&data.Friends,
+			&data.Friend,
 		)
 		if err != nil {
 			return nil, err
@@ -49,23 +48,12 @@ func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interfa
 		payload = append(payload, data)
 	}
 	return payload, nil
+
 }
 
-func (m *mysqlPostRepo) Fetch(ctx context.Context, Names string) (*models.RequestCreate, error) {
+func (m *mysqlPostRepo) Fetch(ctx context.Context, Names string) ([]*models.RequestCreate, error) {
 
-	query := "Select name, age, friends From friends where name=?"
+	query := "Select name, age, friend From friends where name=?"
 
-	rows, err := m.fetch(ctx, query, Names)
-	if err != nil {
-		return nil, err
-	}
-
-	payload := &models.RequestCreate{}
-	if len(rows) > 0 {
-		payload = rows[0]
-	} else {
-		return nil, models.ErrNotFound
-	}
-
-	return payload, nil
+	return m.fetch(ctx, query, Names)
 }

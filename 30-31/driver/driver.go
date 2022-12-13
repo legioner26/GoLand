@@ -29,6 +29,7 @@ func ConnectSQL(host, port, uname, pass, dbname string) (*DB, error) {
 	if err != nil {
 		panic(err)
 	}
+
 	dbConn.SQL = d
 	return dbConn, err
 }
