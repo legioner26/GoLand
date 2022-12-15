@@ -50,10 +50,6 @@ func postRouter(pHandler *ph.Post) http.Handler {
 	r.Post("/create", pHandler.Create)
 	r.Delete("/delete/{id:[0-9]+}", pHandler.Delete)
 	r.Put("/update", pHandler.Update)
-	/*r.Get("/{id:[0-9]+}", pHandler.GetByID)
-	r.Post("/", pHandler.Create)
-	r.Put("/{id:[0-9]+}", pHandler.Update)
-	r.Delete("/{id:[0-9]+}", pHandler.Delete)*/
 
 	return r
 }
