@@ -1,0 +1,47 @@
+
+
+###
+
+GET http://localhost:8000/attestat/11 HTTP/1.1
+content-type: application/json
+
+
+
+# 201 (Created) {"id":"1"}
+# 404 (Not Found)
+
+###
+
+POST http://localhost:8000/attestat/create HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Мармеладово",
+  "region": "Мармеладовая область",
+  "district": "Сказочный",
+  "population": 333757,
+  "foundation": 2022
+}
+
+# 201 (Created) {"id":"1"}
+# 404 (Not Found)
+
+###
+DELETE http://localhost:8000/30-31/delete/5 HTTP/1.1
+content-type: application/json
+
+# 200 (OK)
+# 404 (Not Found)
+
+###
+
+PUT  http://localhost:8000/30-31/update HTTP/1.1
+content-type: application/json
+
+{"id":"2","name":"Vova","friend":"Kolya,Igor,Petya"}
+
+# 200 (OK)
+# 404 (Not Found)
+
+###
+

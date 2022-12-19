@@ -4,15 +4,19 @@ go 1.19
 
 require github.com/goombaio/namegenerator v0.0.0-20181006234301-989e774b106e
 
-require gonum.org/v1/gonum v0.12.0
+require (
+	github.com/go-chi/chi v1.5.4
+	github.com/go-chi/render v1.0.2
+	github.com/go-sql-driver/mysql v1.7.0
+	gonum.org/v1/gonum v0.12.0
+)
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/vcs v1.13.3 // indirect
+	github.com/ajg/form v1.5.1 // indirect
 	github.com/armon/go-radix v1.0.0 // indirect
 	github.com/boltdb/bolt v1.3.1 // indirect
-	github.com/go-chi/chi v1.5.4 // indirect
-	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang/dep v0.5.4 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/jmank88/nuts v0.4.0 // indirect
