@@ -30,15 +30,15 @@ func main() {
 // A completely separate router for posts routes
 func postRouter(pHandler *ph.Post) http.Handler {
 	r := chi.NewRouter()
-	r.Get("/{id}", pHandler.getFull)
-	r.Post("/create", pHandler.create)
-	r.Delete("/{id}", pHandler.delete)
-	r.Put("/population/{id}", pHandler.setPopulation)
-	//r.Put("/update", pHandler.Update)
-	r.Get("/region/{region}", pHandler.getFromRegion)
-	r.Get("/district/{district}", pHandler.getFromDistrict)
-	r.Get("/population/range", pHandler.getFromPopulation)
-	r.Get("/foundation/range", pHandler.getFromFoundation)
+	r.Get("/{id}", pHandler.GetFull)
+	r.Post("/create", pHandler.Create)
+	r.Delete("/{id}", pHandler.Delete)
+	r.Put("/population/{id}", pHandler.SetPopulation)
+	r.Put("/update", pHandler.Update)
+	r.Get("/region/{region}", pHandler.GetFromRegion)
+	r.Get("/district/{district}", pHandler.GetFromDistrict)
+	r.Get("/population/range", pHandler.GetFromPopulation)
+	r.Get("/foundation/range", pHandler.GetFromFoundation)
 
 	return r
 }

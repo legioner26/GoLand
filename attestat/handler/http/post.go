@@ -24,9 +24,9 @@ type Post struct {
 	repo repository.PostRepo
 }
 
-func (h *Post) Updates(w http.ResponseWriter, r *http.Request) {}
+func (h *Post) Update(w http.ResponseWriter, r *http.Request) {}
 
-func (h *Post) getFull(w http.ResponseWriter, r *http.Request) {
+func (h *Post) GetFull(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 
@@ -57,7 +57,7 @@ func (h *Post) getFull(w http.ResponseWriter, r *http.Request) {
 // create processes a request to create a city.
 // If successful, it writes a JSON response containing information
 // about the creation of the city with id, status 201
-func (h *Post) create(w http.ResponseWriter, r *http.Request) {
+func (h *Post) Create(w http.ResponseWriter, r *http.Request) {
 	var city cities.CityRequest
 	content, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -90,7 +90,7 @@ func (h *Post) create(w http.ResponseWriter, r *http.Request) {
 // delete processes a request to delete a city by id.
 // If successful, it writes a response in JSON format
 // containing information about the deletion of the city, status of 200
-func (h *Post) delete(w http.ResponseWriter, r *http.Request) {
+func (h *Post) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, err.Error())
@@ -112,7 +112,7 @@ func (h *Post) delete(w http.ResponseWriter, r *http.Request) {
 // setPopulation processes a request to update the population of the city by id.
 // If successful, it writes a response in JSON format
 // containing information about the city's population update, status 200
-func (h *Post) setPopulation(w http.ResponseWriter, r *http.Request) {
+func (h *Post) SetPopulation(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, err.Error())
@@ -143,7 +143,7 @@ func (h *Post) setPopulation(w http.ResponseWriter, r *http.Request) {
 }
 
 // containing a list of cities, status 200
-func (h *Post) getFromRegion(w http.ResponseWriter, r *http.Request) {
+func (h *Post) GetFromRegion(w http.ResponseWriter, r *http.Request) {
 	region := chi.URLParam(r, "region")
 	region = toUpperFirst(region)
 
@@ -161,7 +161,7 @@ func (h *Post) getFromRegion(w http.ResponseWriter, r *http.Request) {
 // getFromDistrict processes a request to get a list of cities by district.
 // If successful, it writes a response in JSON format
 // containing a list of cities, status 200
-func (h *Post) getFromDistrict(w http.ResponseWriter, r *http.Request) {
+func (h *Post) GetFromDistrict(w http.ResponseWriter, r *http.Request) {
 	district := chi.URLParam(r, "district")
 	district = toUpperFirst(district)
 
@@ -179,7 +179,7 @@ func (h *Post) getFromDistrict(w http.ResponseWriter, r *http.Request) {
 // getFromPopulation processes a request to get a list of cities by population.
 // If successful, it writes a response in JSON format
 // containing a list of cities, status 200
-func (h *Post) getFromPopulation(w http.ResponseWriter, r *http.Request) {
+func (h *Post) GetFromPopulation(w http.ResponseWriter, r *http.Request) {
 	content, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
@@ -206,7 +206,7 @@ func (h *Post) getFromPopulation(w http.ResponseWriter, r *http.Request) {
 // getFromFoundation processes a request to get a list of cities by foundation.
 // If successful, it writes a response in JSON format
 // containing a list of cities, status 200
-func (h *Post) getFromFoundation(w http.ResponseWriter, r *http.Request) {
+func (h *Post) GetFromFoundation(w http.ResponseWriter, r *http.Request) {
 	content, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
