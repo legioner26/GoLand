@@ -8,7 +8,7 @@ import (
 // PostRepo explain...
 type PostRepo interface {
 	//Update(city *cities.CityRequest) (string, error)
-	Create(city *cities.CityRequest) (*cities.CityRequest, error)
+	Create(city cities.CityRequest) (string, error)
 	Delete(id int) error
 	SetPopulation(id, population int) error
 	GetFromRegion(region string) ([]string, error)
