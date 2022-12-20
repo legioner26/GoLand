@@ -3,11 +3,12 @@ package main
 import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/spf13/viper"
 	"log"
 	"net/http"
 	"os"
-
 	ph "skillbox/attestat/handler/http"
+	"skillbox/attestat/repository/post"
 )
 
 func main() {
@@ -24,6 +25,7 @@ func main() {
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	errorLog.Fatal(http.ListenAndServe(":8000", r))
+	db, err := post.NewDataBase(viper.GetString("city.csv"))
 
 }
 

@@ -1,112 +1,223 @@
 package post
 
 import (
-	"context"
-	"database/sql"
-	"log"
+	"encoding/csv"
 	"os"
-	models "skillbox/30-31/models"
-	pRepo "skillbox/30-31/repository"
+	cities "skillbox/attestat/models"
+	"strconv"
 )
 
 // NewSQLPostRepo retunrs implement of post repository interface
-func NewSQLPostRepo(Conn *sql.DB) pRepo.PostRepo {
-	return &mysqlPostRepo{
-		Conn: Conn,
+const (
+	nameIdx = iota
+	regionIdx
+	districtIdx
+	populationIdx
+	foundationIdx
+)
+const (
+	errNotFoundId = "ERROR: CITY WITH THIS ID WAS NOT FOUND"
+)
+
+type DataBase struct {
+	records map[int][]string
+	lastID  int
+}
+
+type CityListDB struct {
+	db *DataBase
+}
+
+func NewCityListDB(db *DataBase) *CityListDB {
+	return &CityListDB{db: db}
+}
+func NewDataBase(filePath string) (*DataBase, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
 	}
-}
+	defer file.Close()
 
-type mysqlPostRepo struct {
-	Conn *sql.DB
-}
-
-func (m *mysqlPostRepo) fetch(ctx context.Context, query string, args ...interface{}) ([]*models.RequestSelect, error) {
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	infoLog.Printf("Получаем аргумент %s", args...)
-	infoLog.Printf("Получаем строку запроса %s", query)
-
-	rows, err := m.Conn.QueryContext(ctx, query, args...)
-
+	csvReader := csv.NewReader(file)
+	cities, err := csvReader.ReadAll()
 	if err != nil {
 		return nil, err
 	}
 
-	defer rows.Close()
+	cityList := new(DataBase)
+	cityList.records = make(map[int][]string)
 
-	payload := make([]*models.RequestSelect, 0)
-	for rows.Next() {
-		data := new(models.RequestSelect)
+	if len(cities) == 0 {
+		return cityList, nil
+	}
 
-		err := rows.Scan(
-			&data.Name,
-			&data.Age,
-			&data.Friend,
-		)
+	for _, city := range cities {
+		id, _ := strconv.Atoi(city[0])
 		if err != nil {
 			return nil, err
 		}
-		payload = append(payload, data)
-		infoLog.Printf("данные %s", payload)
+		cityList.records[id] = make([]string, 5)
+		copy(cityList.records[id], city[1:])
 	}
-	return payload, nil
 
+	cityList.lastID = 0
+	for cityID := range cityList.records {
+		if cityList.lastID < cityID {
+			cityList.lastID = cityID
+		}
+	}
+	return cityList, nil
 }
 
-func (m *mysqlPostRepo) Fetch(ctx context.Context, Names string) ([]*models.RequestSelect, error) {
-
-	query := "Select name, age, friend From friends where name=?"
-
-	return m.fetch(ctx, query, Names)
-}
-func (m *mysqlPostRepo) Create(ctx context.Context, p *models.RequestSelect) (int64, error) {
-
-	query := "Insert friends SET name=?, age=?, friend=?"
-
-	stmt, err := m.Conn.PrepareContext(ctx, query)
+// SaveCSV saves the database to a csv file.
+// Creates a csv file and copies data from the DataBase structure into it.
+// If successful, overwrites the csv file into the filePath file.
+func (db *DataBase) SaveCSV(filePath string) error {
+	file, err := os.Create(filePath)
 	if err != nil {
-		return -1, err
+		return err
+	}
+	defer file.Close()
+
+	var data [][]string
+	for id, description := range db.records {
+		var cityLine []string
+		cityLine = append(cityLine, strconv.Itoa(id))
+		cityLine = append(cityLine, description...)
+		data = append(data, cityLine)
 	}
 
-	res, err := stmt.ExecContext(ctx, p.Name, p.Age, p.Friend)
-	defer stmt.Close()
-
+	writer := csv.NewWriter(file)
+	err = writer.WriteAll(data)
 	if err != nil {
-		return -1, err
+		return err
+	}
+	return nil
+}
+
+// Create places a new city in the database and assigns it an id.
+// Returns the id of the city
+func (r *CityListDB) Create(city cities.CityRequest) (string, error) {
+	newID := r.newId()
+	citySlice := []string{
+		city.Name,
+		city.Region,
+		city.District,
+		strconv.Itoa(city.Population),
+		strconv.Itoa(city.Foundation),
 	}
 
-	return res.LastInsertId()
+	r.db.records[newID] = citySlice
+	return strconv.Itoa(newID), nil
 }
-func (m *mysqlPostRepo) Update(ctx context.Context, p *models.RequestMakeFriend) (*models.RequestMakeFriend, error) {
-	query := "Update friends set name=?, friend=? where id=?"
 
-	stmt, err := m.Conn.PrepareContext(ctx, query)
+// Delete deletes the city with the id from the database
+func (r *CityListDB) Delete(id int) error {
+	_, ok := r.db.records[id]
+	if !ok {
+		return errors.New(errNotFoundId)
+	}
+
+	delete(r.db.records, id)
+	return nil
+}
+
+// SetPopulation updates the city population by id in the database
+func (r *CityListDB) SetPopulation(id, population int) error {
+	_, ok := r.db.records[id]
+	if !ok {
+		return errors.New(errNotFoundId)
+	}
+
+	r.db.records[id][populationIdx] = strconv.Itoa(population)
+	return nil
+}
+
+// GetFromRegion returns the list of cities by region
+func (r *CityListDB) GetFromRegion(region string) ([]string, error) {
+	return r.findCities(regionIdx, region), nil
+}
+
+// GetFromDistrict returns the list of cities by district
+func (r *CityListDB) GetFromDistrict(district string) ([]string, error) {
+	return r.findCities(districtIdx, district), nil
+}
+
+// GetFromPopulation returns the list of cities by population
+func (r *CityListDB) GetFromPopulation(start, end int) ([]string, error) {
+	return r.findRangeCities(populationIdx, start, end)
+}
+
+// GetFromFoundation returns the list of cities by foundation
+func (r *CityListDB) GetFromFoundation(start, end int) ([]string, error) {
+	return r.findRangeCities(foundationIdx, start, end)
+}
+
+// GetFull searches for a city by id.
+// If successful, it returns full information about the city
+func (r *CityListDB) GetFull(id int) (*cities.City, error) {
+	_, ok := r.db.records[id]
+	if !ok {
+		return nil, errors.New(errNotFoundId)
+	}
+
+	city := new(cities.City)
+	city.Id = id
+	city.Name = r.db.records[id][nameIdx]
+	city.Region = r.db.records[id][regionIdx]
+	city.District = r.db.records[id][districtIdx]
+
+	population, err := strconv.Atoi(r.db.records[id][populationIdx])
 	if err != nil {
 		return nil, err
 	}
-	_, err = stmt.ExecContext(
-		ctx,
-		p.Name,
-		p.Friend,
-		p.ID,
-	)
+	city.Population = population
+
+	foundation, err := strconv.Atoi(r.db.records[id][foundationIdx])
 	if err != nil {
 		return nil, err
 	}
-	defer stmt.Close()
+	city.Foundation = foundation
 
-	return p, nil
+	return city, nil
 }
 
-func (m *mysqlPostRepo) Delete(ctx context.Context, id int64) (bool, error) {
-	query := "Delete From friends Where id=?"
+// newId returns a free identifier in the database
+func (r *CityListDB) newId() int {
+	r.db.lastID++
+	return r.db.lastID
+}
 
-	stmt, err := m.Conn.PrepareContext(ctx, query)
-	if err != nil {
-		return false, err
+// findCities searches for cities based on idxType.
+// Returns a list of found cities
+func (r *CityListDB) findCities(idxType int, searchText string) []string {
+	cityNames := make([]string, 0)
+	for _, cityLine := range r.db.records {
+		if cityLine[idxType] == searchText {
+			cityNames = append(cityNames, cityLine[nameIdx])
+		}
 	}
-	_, err = stmt.ExecContext(ctx, id)
-	if err != nil {
-		return false, err
+	return cityNames
+}
+
+// findRangeCities searches for cities in the range [start; end] based on idxType.
+// Returns a list of found cities
+func (r *CityListDB) findRangeCities(idxType int, start, end int) ([]string, error) {
+	if start > end {
+		start, end = end, start
 	}
-	return true, nil
+
+	cityNames := make([]string, 0)
+	for _, cityLine := range r.db.records {
+
+		year, err := strconv.Atoi(cityLine[idxType])
+		if err != nil {
+			return nil, err
+		}
+
+		if year >= start && year <= end {
+			cityNames = append(cityNames, cityLine[nameIdx])
+		}
+	}
+	return cityNames, nil
 }
