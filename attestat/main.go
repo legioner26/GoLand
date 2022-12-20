@@ -19,7 +19,7 @@ func main() {
 	r.Use(middleware.Logger)
 
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
-	db, err := post.NewDataBase(viper.GetString("cities.csv"))
+	db, _ := post.NewDataBase(viper.GetString("cities.csv"))
 	repos := repository.NewRepository(db)
 	if err := db.SaveCSV(viper.GetString("cities.csv")); err != nil {
 		errorLog.Printf("GET: Сities by foundation range %v", err)
