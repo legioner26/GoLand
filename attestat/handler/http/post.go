@@ -54,9 +54,6 @@ func (h *Post) GetFull(w http.ResponseWriter, r *http.Request) {
 	w.Write(message)
 }
 
-// create processes a request to create a city.
-// If successful, it writes a JSON response containing information
-// about the creation of the city with id, status 201
 func (h *Post) Create(w http.ResponseWriter, r *http.Request) {
 	var city cities.CityRequest
 	content, err := ioutil.ReadAll(r.Body)
@@ -87,9 +84,6 @@ func (h *Post) Create(w http.ResponseWriter, r *http.Request) {
 	respondwithJSON(w, http.StatusCreated, message)
 }
 
-// delete processes a request to delete a city by id.
-// If successful, it writes a response in JSON format
-// containing information about the deletion of the city, status of 200
 func (h *Post) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -109,9 +103,6 @@ func (h *Post) Delete(w http.ResponseWriter, r *http.Request) {
 	respondwithJSON(w, http.StatusOK, message)
 }
 
-// setPopulation processes a request to update the population of the city by id.
-// If successful, it writes a response in JSON format
-// containing information about the city's population update, status 200
 func (h *Post) SetPopulation(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -142,7 +133,6 @@ func (h *Post) SetPopulation(w http.ResponseWriter, r *http.Request) {
 	respondwithJSON(w, http.StatusOK, "Change was successful")
 }
 
-// containing a list of cities, status 200
 func (h *Post) GetFromRegion(w http.ResponseWriter, r *http.Request) {
 	region := chi.URLParam(r, "region")
 	region = toUpperFirst(region)
@@ -158,9 +148,6 @@ func (h *Post) GetFromRegion(w http.ResponseWriter, r *http.Request) {
 	respondwithJSON(w, http.StatusOK, cityNames)
 }
 
-// getFromDistrict processes a request to get a list of cities by district.
-// If successful, it writes a response in JSON format
-// containing a list of cities, status 200
 func (h *Post) GetFromDistrict(w http.ResponseWriter, r *http.Request) {
 	district := chi.URLParam(r, "district")
 	district = toUpperFirst(district)
@@ -176,9 +163,6 @@ func (h *Post) GetFromDistrict(w http.ResponseWriter, r *http.Request) {
 	respondwithJSON(w, http.StatusOK, cityNames)
 }
 
-// getFromPopulation processes a request to get a list of cities by population.
-// If successful, it writes a response in JSON format
-// containing a list of cities, status 200
 func (h *Post) GetFromPopulation(w http.ResponseWriter, r *http.Request) {
 	content, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -203,9 +187,6 @@ func (h *Post) GetFromPopulation(w http.ResponseWriter, r *http.Request) {
 	respondwithJSON(w, http.StatusOK, cityNames)
 }
 
-// getFromFoundation processes a request to get a list of cities by foundation.
-// If successful, it writes a response in JSON format
-// containing a list of cities, status 200
 func (h *Post) GetFromFoundation(w http.ResponseWriter, r *http.Request) {
 	content, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -231,8 +212,6 @@ func (h *Post) GetFromFoundation(w http.ResponseWriter, r *http.Request) {
 	respondwithJSON(w, http.StatusOK, cityNames)
 }
 
-// toUpperFirst changes the first letter to uppercase
-// returns the string
 func toUpperFirst(text string) string {
 	textRune := []rune(text)
 	for i := range textRune {

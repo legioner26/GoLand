@@ -25,7 +25,7 @@ func main() {
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	errorLog.Fatal(http.ListenAndServe(":8000", r))
-	db, err := post.NewDataBase(viper.GetString("city.csv"))
+	db, err := post.NewDataBase(viper.GetString("cities.csv"))
 
 }
 
