@@ -2,6 +2,7 @@ package post
 
 import (
 	"encoding/csv"
+	"errors"
 	"os"
 	cities "skillbox/attestat/models"
 	"strconv"
@@ -109,6 +110,7 @@ func (r *CityListDB) Create(city cities.CityRequest) (string, error) {
 func (r *CityListDB) Delete(id int) error {
 	_, ok := r.db.records[id]
 	if !ok {
+
 		return errors.New(errNotFoundId)
 	}
 
