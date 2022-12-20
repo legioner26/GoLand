@@ -15,8 +15,8 @@ import (
 )
 
 // NewPostHandler ...
-func NewPostHandler() *Post {
-	return &Post{}
+func NewPostHandler(db *repository.Service) *Post {
+	return &Post{repo: db}
 }
 
 // Post ...

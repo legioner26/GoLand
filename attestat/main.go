@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	ph "skillbox/attestat/handler/http"
+	"skillbox/attestat/repository"
 	"skillbox/attestat/repository/post"
 )
 
@@ -17,15 +18,19 @@ func main() {
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Logger)
 
-	pHandler := ph.NewPostHandler()
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	db, err := post.NewDataBase(viper.GetString("cities.csv"))
+	repos := repository.NewRepository(db)
+	if err := db.SaveCSV(viper.GetString("cities.csv")); err != nil {
+		errorLog.Printf("GET: Сities by foundation range %v", err)
+
+	}
+	pHandler := ph.NewPostHandler(repos)
 	r.Route("/", func(rt chi.Router) {
 		rt.Mount("/attestat", postRouter(pHandler))
 	})
 
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
-
 	errorLog.Fatal(http.ListenAndServe(":8000", r))
-	db, err := post.NewDataBase(viper.GetString("cities.csv"))
 
 }
 
