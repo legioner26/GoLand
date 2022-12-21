@@ -2,7 +2,7 @@
 
 ###
 
-GET http://localhost:8000/attestat/11 HTTP/1.1
+GET http://localhost:8080/attestat/11 HTTP/1.1
 content-type: application/json
 
 
@@ -12,7 +12,7 @@ content-type: application/json
 
 ###
 
-POST http://localhost:8000/attestat/create HTTP/1.1
+POST http://localhost:8080/attestat/create HTTP/1.1
 content-type: application/json
 
 {
@@ -26,10 +26,10 @@ content-type: application/json
 # 201 (Created) {"id":"1"}
 # 404 (Not Found)
 ###
-GET http://localhost:8000/attestat/district/Приволжский
+GET http://localhost:8080/attestat/district/Приволжский
 content-type: application/json
 ###
-GET http://localhost:8000/attestat/population/range
+GET http://localhost:8080/attestat/population/range
 content-type: application/json
 
 {
@@ -37,7 +37,7 @@ content-type: application/json
   "end": 70000
 }
 ###
-DELETE http://localhost:8000/attestat/delete/769 HTTP/1.1
+DELETE http://localhost:8080/attestat/delete/769 HTTP/1.1
 content-type: application/json
 
 # 200 (OK)
@@ -45,7 +45,7 @@ content-type: application/json
 
 ###
 
-PUT http://localhost:8000/attestat/population/769 HTTP/1.1
+PUT http://localhost:8080/attestat/population/769 HTTP/1.1
 content-type: application/json
 
 {
@@ -56,7 +56,7 @@ content-type: application/json
 # 404 (Not Found)
 
 ###
-GET http://localhost:8000/attestat/foundation/range
+GET http://localhost:8080/attestat/foundation/range
 
 {
   "start" : 900,

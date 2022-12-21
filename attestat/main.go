@@ -29,7 +29,7 @@ func main() {
 		rt.Mount("/attestat", postRouter(pHandler))
 	})
 
-	errorLog.Fatal(http.ListenAndServe(":8000", r))
+	errorLog.Fatal(http.ListenAndServe(":8080", r))
 
 }
 
