@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/spf13/viper"
 	"log"
 	"net/http"
 	"os"
@@ -19,9 +18,9 @@ func main() {
 	r.Use(middleware.Logger)
 
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
-	db, _ := post.NewDataBase(viper.GetString("cities.csv"))
+	db, _ := post.NewDataBase("cities.csv")
 	repos := repository.NewRepository(db)
-	if err := db.SaveCSV(viper.GetString("cities.csv")); err != nil {
+	if err := db.SaveCSV("cities.csv"); err != nil {
 		errorLog.Printf("GET: Сities by foundation range %v", err)
 
 	}
