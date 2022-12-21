@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	ph "skillbox/attestat/handler/http"
+	ph "skillbox/attestat/handler"
 	"skillbox/attestat/repository"
 	"skillbox/attestat/repository/post"
 )

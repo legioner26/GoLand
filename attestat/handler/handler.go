@@ -8,8 +8,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-	cities "skillbox/attestat/models"
-	repository "skillbox/attestat/repository"
+	"skillbox/attestat/models"
+	"skillbox/attestat/repository"
 	"strconv"
 	"unicode"
 )
