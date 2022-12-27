@@ -1,0 +1,12 @@
+addr: :9999
+sms_file: simulator/sms.data
+mms_addr: http://127.0.0.1:9999/mms
+mms_file: simulator/mms.json
+voice_call_file: simulator/voice.data
+email_file: simulator/email.data
+billing_file: simulator/billing.data
+support_addr: http://127.0.0.1:9999/support
+support_file: simulator/support.json
+incident_addr: http://127.0.0.1:9999/incident
+incident_file: simulator/incident.json
+web_dir: web

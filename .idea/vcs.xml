@@ -6,5 +6,6 @@
     <mapping directory="$PROJECT_DIR$/30-31REST/go-mysql-crud" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/go-mysql-crud" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/request/go-mysql-crud" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/simuldip" vcs="Git" />
   </component>
 </project>
