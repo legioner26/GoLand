@@ -20,7 +20,7 @@ func listenAndServeHTTP() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	infoLog.Printf("GET: Full info %v", config.GlobalConfig.Addr)
 
-	log.Fatal(http.ListenAndServe(":9999", router))
+	log.Fatal(http.ListenAndServe(config.GlobalConfig.Addr, router))
 }
 
 func handleAPI(w http.ResponseWriter, r *http.Request) {

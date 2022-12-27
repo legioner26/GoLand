@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
-	"os"
 )
 
 type Config struct {
@@ -37,7 +36,7 @@ func NewConfig(file string) Config {
 		fmt.Println(err.Error())
 		return GetDefaultConfig()
 	}
-
+	fmt.Println(config)
 	return config
 }
 
@@ -46,7 +45,7 @@ func GetDefaultConfig() Config {
 
 	//const dir = "/skillbox/diplom/cmd/"
 	const dirsim = "/simulator/"
-	const addr = ":9999"
+	const addr = "9999"
 
 	var config Config
 
@@ -66,8 +65,7 @@ func GetDefaultConfig() Config {
 }
 
 func ForHerokuConfig(config Config) Config {
-	port := os.Getenv("PORT")
-	config.Addr = ":" + port
+	port := config.Addr
 	config.MMSAddr = "http://127.0.0.1:" + port + "/mms"
 	config.SupportAddr = "http://127.0.0.1:" + port + "/support"
 	config.IncidentAddr = "http://127.0.0.1:" + port + "/incident"
