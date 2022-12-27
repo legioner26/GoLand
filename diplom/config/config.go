@@ -45,7 +45,7 @@ func GetDefaultConfig() Config {
 
 	//const dir = "/skillbox/diplom/cmd/"
 	const dirsim = "/simulator/"
-	const addr = "9999"
+	const addr = ":9999"
 
 	var config Config
 
