@@ -33,6 +33,7 @@ func (h *Post) GetFull(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusBadRequest, err.Error())
 		return
 	}
+
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	infoLog.Printf("GET: Full info %v", id)
 
