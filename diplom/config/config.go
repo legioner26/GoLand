@@ -18,6 +18,7 @@ type Config struct {
 	SupportFile   string `yaml:"support_file"`
 	IncidentAddr  string `yaml:"incident_addr"`
 	IncidentFile  string `yaml:"incident_file"`
+	WebDir        string `yaml:"web_dir"`
 }
 
 var GlobalConfig Config
@@ -60,7 +61,7 @@ func GetDefaultConfig() Config {
 	config.SupportFile = dirsim + "support.json"
 	config.IncidentAddr = "http://" + addr + "/incident"
 	config.IncidentFile = dirsim + "incident.json"
-
+	config.WebDir = "/web"
 	return config
 }
 

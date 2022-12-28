@@ -17,6 +17,9 @@ func listenAndServeHTTP() {
 	router.HandleFunc("/support", handleSupport).Methods("GET")
 	router.HandleFunc("/incident", handleIncident).Methods("GET")
 
+	fileServer := http.FileServer(http.Dir(config.GlobalConfig.WebDir))
+	router.PathPrefix("/").Handler(http.StripPrefix("/", fileServer))
+
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	infoLog.Printf("GET: Full info %v", config.GlobalConfig.Addr)
 
