@@ -1,12 +1,13 @@
 (function(){
-    // let apiPath = 'http://127.0.0.1:8383/test';
+   // let apiPath = 'https://statuspage-skillbox.herokuapp.com/api';
     let apiPath = 'http://127.0.0.1:9999/api';
+    //let apiPath = 'response/error.json';
 
     let dataScheme = {
         'voice_call' : [
             "country", "bandwidth", "response_time", "provider",
             "connection_stability", "ttfb", "voice_purity",
-            "median_of_calls_time"
+            "median_of_call_time"
         ],
         'sms' : ["country", "bandwidth", "response_time", "provider"],
         'mms' : ["country", "bandwidth", "response_time", "provider"],
@@ -88,7 +89,7 @@
         data.forEach(array => {
             renderTableData(table, array, scheme);
             addDelimiter(table);
-        });
+        })
     };
 
     let showSupportTime = function(data) {
@@ -103,7 +104,7 @@
         let words = text.split('_');
         for(i in words) {
             words[i] = words[i].charAt(0).toUpperCase() +
-                words[i].slice(1);
+                words[i].slice(1)
         }
         return words.join(' ');
     };
@@ -137,45 +138,39 @@
 
         console.log(data);
 
-        Object.entries(data).forEach((country) => {
-                var p = document.createElement('h3');
-                p.innerText =`${country[0]}`
-                container.appendChild(p);
-                let div = document.createElement('div');
-                country[1].forEach((item) => {
-                    let labels = [];
-                    let values = [];
-                    item.forEach((sector) => {
-                        labels.push(sector.provider + " (" + sector.country + ")");
-                        values.push(sector.delivery_time);
-                    });
-                    let canvas = document.createElement('canvas');
-                    let ctx = canvas.getContext('2d');
-                    let chart = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            'labels': labels,
-                            'datasets': [
-                                {
-                                    'label': 'Dataset 1',
-                                    'data': values,
-                                    'backgroundColor': pieColors
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: false,
-                            plugins: {
-                                legend: {
-                                    position: 'top'
-                                }
-                            }
-                        }
-                    });
-                    div.appendChild(canvas);
-                });
-                container.appendChild(div);
+        data.forEach((item) => {
+            let labels = [];
+            let values = [];
+            item.forEach((sector) => {
+                labels.push(sector.provider + " (" + sector.country + ")");
+                values.push(sector.delivery_time);
             });
+
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            let chart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    'labels': labels,
+                    'datasets': [
+                        {
+                            'label': 'Dataset 1',
+                            'data': values,
+                            'backgroundColor': pieColors
+                        }
+                    ]
+                },
+                options: {
+                    responsive: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+            container.appendChild(canvas);
+        });
     };
 
     let handleResponse = async function(response){
@@ -198,7 +193,8 @@
         renderIncidents(json.data.incident);
 
         console.log('YES');
-        renderEmailCharts(json.data.email);
+        renderEmailCharts(json.data.email.RU);
+        //renderEmailCharts(json.data.email.AT);
     };
 
     ready(() => {

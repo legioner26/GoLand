@@ -1,15 +1,14 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
 	"math/rand"
-	"net/http"
 	"strconv"
 	"strings"
+	"io/ioutil"
+	"fmt"
 	"time"
-
+	"encoding/json"
+	"net/http"
 	"github.com/gorilla/mux"
 )
 
@@ -56,19 +55,19 @@ var SupportCollection []SupportItem
 var AccendentCollection []AccendentItem
 
 type MMSItem struct {
-	Country      string `json:"country"`
-	Provider     string `json:"provider"`
-	Bandwidth    string `json:"bandwidth"`
+	Country  string `json:"country"`
+	Provider string `json:"provider"`
+	Bandwidth string `json:"bandwidth"`
 	ResponseTime string `json:"response_time"`
 }
 
 type SupportItem struct {
-	Topic         string `json:"topic"`
-	ActiveTickets int    `json:"active_tickets"`
+	Topic string `json:"topic"`
+	ActiveTickets int `json:"active_tickets"`
 }
 
 type AccendentItem struct {
-	Topic  string `json:"topic"`
+	Topic string  `json:"topic"`
 	Status string `json:"status"`
 }
 
@@ -85,26 +84,27 @@ var AccendentTopics = []string{
 	"API Slow latency",
 }
 
+
 func init() {
 	rand.Seed(time.Now().UnixNano())
 
 	firstSMSRowForCorrupt = rand.Intn(70)
-	fmt.Printf("First SMS row for currupt %d\n", firstSMSRowForCorrupt+1)
+	fmt.Printf("First SMS row for currupt %d\n", firstSMSRowForCorrupt + 1)
 
 	secondSMSRowForCorrupt = rand.Intn(90)
-	fmt.Printf("Second SMS row for currupt %d\n", secondSMSRowForCorrupt+1)
+	fmt.Printf("Second SMS row for currupt %d\n", secondSMSRowForCorrupt + 1)
 
 	firstVoiceRowForCorrupt = rand.Intn(70)
-	fmt.Printf("First Voice row for currupt %d\n", firstVoiceRowForCorrupt+1)
+	fmt.Printf("First Voice row for currupt %d\n", firstVoiceRowForCorrupt + 1)
 
 	secondVoiceRowForCorrupt = rand.Intn(90)
-	fmt.Printf("Second Voice row for currupt %d\n", secondVoiceRowForCorrupt+1)
+	fmt.Printf("Second Voice row for currupt %d\n", secondVoiceRowForCorrupt + 1)
 
 	firstEmailRowForCorrupt = rand.Intn(70)
-	fmt.Printf("First Email row for currupt %d\n", firstEmailRowForCorrupt+1)
+	fmt.Printf("First Email row for currupt %d\n", firstEmailRowForCorrupt + 1)
 
 	secondEmailRowForCorrupt = rand.Intn(90)
-	fmt.Printf("Second Email row for currupt %d\n", secondEmailRowForCorrupt+1)
+	fmt.Printf("Second Email row for currupt %d\n", secondEmailRowForCorrupt + 1)
 }
 
 func main() {
@@ -124,7 +124,7 @@ func main() {
 
 func shuffleSmsData() {
 	var data string
-	for i, country := range getCountriesList() {
+	for i, country := range(getCountriesList()) {
 		row := strings.Join([]string{
 			country,
 			getRandomBandwidthInString(),
@@ -151,13 +151,13 @@ func shuffleSmsData() {
 
 func shuffleMMSData() []MMSItem {
 	data := make([]MMSItem, 0)
-	for _, country := range getCountriesList() {
+	for _, country := range(getCountriesList()) {
 		data = append(
 			data,
 			MMSItem{
-				Country:      country,
-				Provider:     getMMSProviderByCountry(country),
-				Bandwidth:    getRandomBandwidthInString(),
+				Country: country,
+				Provider: getMMSProviderByCountry(country),
+				Bandwidth: getRandomBandwidthInString(),
 				ResponseTime: getRandomResponseTimeInString(),
 			},
 		)
@@ -168,7 +168,7 @@ func shuffleMMSData() []MMSItem {
 
 func shuffleVoiceData() {
 	var data string
-	for i, country := range getCountriesList() {
+	for i, country := range(getCountriesList()) {
 		row := strings.Join([]string{
 			country,
 			getRandomBandwidthInString(),
@@ -272,7 +272,7 @@ func shuffleAccendentData() []AccendentItem {
 	collection := make([]AccendentItem, 0)
 	status := ""
 	for _, topic := range AccendentTopics {
-		if getRandomIntBetweenValues(0, 2) == 1 {
+		if getRandomIntBetweenValues(0, 1) == 1 {
 			status = accendentStatusActive
 		} else {
 			status = accendentStatusClosed
@@ -406,7 +406,7 @@ func getRandomResponseTimeInString() string {
 func getRandomConnectionStability() string {
 	stability := getRandomIntBetweenValues(minConnectionStability, maxConnectionStability)
 
-	return fmt.Sprintf("%.2f", float32(stability)/1000)
+	return fmt.Sprintf("%.2f", float32(stability) / 1000)
 }
 
 func getRandomTTFB() string {
@@ -426,7 +426,7 @@ func getRandomEmailDeliveryTime() string {
 }
 
 func getRandomIntBetweenValues(min int, max int) int {
-	return rand.Intn(max-min+1) + min
+	return rand.Intn(max - min) + min
 }
 
 func listenAndServeHTTP() {
