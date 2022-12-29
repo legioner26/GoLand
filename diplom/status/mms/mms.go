@@ -56,7 +56,7 @@ func CheckMMSData(data []MMSData) []MMSData {
 func StatusMMS(url string) []MMSData {
 	result := make([]MMSData, 0)
 
-	resp, err := http.Get(url)
+	resp, err := http.Get("http://127.0.0.1:8383/mms")
 	if err != nil {
 		fmt.Println(err.Error() + `: ` + url)
 		return []MMSData{}

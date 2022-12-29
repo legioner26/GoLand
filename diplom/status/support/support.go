@@ -15,7 +15,7 @@ type SupportData struct {
 func StatusSupport(url string) []SupportData {
 	result := make([]SupportData, 0)
 
-	resp, err := http.Get(url)
+	resp, err := http.Get("http://127.0.0.1:8383/support")
 	if err != nil {
 		fmt.Println(err.Error() + `: ` + url)
 		return []SupportData{}

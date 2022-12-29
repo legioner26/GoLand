@@ -187,17 +187,18 @@ func GetResultData() ResultSetT {
 }
 
 func CheckResult(r ResultSetT) bool {
+
 	if len(r.MMS[0]) == 0 && len(r.MMS[1]) == 0 {
-		return false
+		return true
 	}
 
 	if len(r.Support) == 0 {
-		return false
+		return true
 	}
 
 	if len(r.Incidents) == 0 {
-		return false
+		return true
 	}
 
-	return true
+	return false
 }

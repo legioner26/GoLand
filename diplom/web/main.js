@@ -184,7 +184,7 @@
             showErrors([json.error]);
             return;
         }
-
+        console.log(json.data)
         renderVoiceCalls(json.data.voice_call);
         renderArray(json.data.sms, ".sms", dataScheme.sms);
         renderArray(json.data.mms, ".mms", dataScheme.mms);
