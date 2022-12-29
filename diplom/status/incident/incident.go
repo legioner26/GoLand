@@ -15,7 +15,7 @@ type IncidentData struct {
 func StatusIncident(url string) []IncidentData {
 	result := make([]IncidentData, 0)
 
-	resp, err := http.Get("http://127.0.0.1:8383/incident")
+	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err.Error() + `: ` + url)
 		return []IncidentData{}
