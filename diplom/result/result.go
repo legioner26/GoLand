@@ -1,6 +1,8 @@
 package result
 
 import (
+	"log"
+	"os"
 	"skillbox/diplom/config"
 	"skillbox/diplom/status/billing"
 	"skillbox/diplom/status/email"
@@ -181,7 +183,8 @@ func GetResultData() ResultSetT {
 	res.Billing = <-billingChan
 	res.Support = <-supportChan
 	res.Incidents = <-incidentsChan
-
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	infoLog.Printf("GET: инцидент %v", res)
 	SetToCache(res, time.Now())
 	return res
 }
@@ -197,8 +200,8 @@ func CheckResult(r ResultSetT) bool {
 	}
 
 	if len(r.Incidents) == 0 {
-		return true
+		return false
 	}
 
-	return false
+	return true
 }
